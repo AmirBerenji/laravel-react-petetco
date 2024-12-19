@@ -2,13 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\PermissionsEnum;
 use App\Models\Comment;
 use App\Models\Feature;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 
-class CommentController extends Controller
+class CommentController extends Controller implements HasMiddleware
 {
+
+        public static function middleware()
+        {
+            return[
+                'auth',
+                new  Middleware('can:' . PermissionsEnum::ManageComments->value)
+            ];   
+        }
+
     public function store(Request $request,Feature $feature)
     {
             $data = $request->validate([

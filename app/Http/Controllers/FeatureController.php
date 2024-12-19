@@ -2,18 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\PermissionsEnum;
 use App\Http\Resources\FeatureListResource;
 use App\Http\Resources\FeatureResource;
 use App\Models\Comment;
 use App\Models\Feature;
 use App\Models\Upvote;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class FeatureController extends Controller
+class FeatureController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return[
+            'auth',
+            'verified',
+            new Middleware('can:' . PermissionsEnum::ManageFeature->value,except:['index','show'])
+        ];
+    }
      public function index()
     {
         $currentUser = Auth::id();

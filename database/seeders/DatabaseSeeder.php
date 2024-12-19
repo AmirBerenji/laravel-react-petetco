@@ -51,8 +51,8 @@ class DatabaseSeeder extends Seeder
             );
 
         $userRole->syncPermissions($upvoteDownvotePermission);
-        $commenterRole -> syncPermissions([$commenterRole,$upvoteDownvotePermission]);
-        $adminRole ->syncPermissions([$commenterRole,$upvoteDownvotePermission,$manageUsersPermission,$manageFeaturePermission]);     
+        $commenterRole -> syncPermissions([$manageCommentsPermission,$upvoteDownvotePermission]);
+        $adminRole ->syncPermissions([$manageCommentsPermission,$upvoteDownvotePermission,$manageUsersPermission,$manageFeaturePermission]);     
 
         User::factory()->create([
             'name' => 'User User',

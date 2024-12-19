@@ -2,7 +2,7 @@ import { Feature } from "@/types";
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
 import FeatureActionsDropdown from "./FeatureActionsDropdown";
-import FeatureUpvoteDownvote from "./featureUpvoteDownvote";
+import FeatureUpvoteDownvote from "./FeatureUpvoteDownvote";
 
 export default function FeatureItem({ feature }: { feature: Feature }) {
   const [isExpanded, setIsExpanded] = useState(false);
