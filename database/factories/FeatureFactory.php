@@ -10,13 +10,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class FeatureFactory extends Factory
 {
-    
     public function definition(): array
     {
         return [
-            'name'=>fake()->text(),
-            'description'=>fake()->text(2000),
-            'user_id'=> User::where('email','admin@example.com')->first()->id
+            'name' => fake()->text(),
+            'description' => fake()->text(2000),
+            'user_id' => User::where('email', 'admin@example.com')->first()->id,
         ];
     }
 }

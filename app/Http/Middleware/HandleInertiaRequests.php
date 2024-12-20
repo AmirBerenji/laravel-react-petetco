@@ -31,7 +31,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $user=$request->user();
+        $user = $request->user();
+
         return [
             ...parent::share($request),
             'auth' => [
@@ -41,7 +42,7 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
-            'success'=>session('success')
+            'success' => session('success'),
         ];
     }
 }
