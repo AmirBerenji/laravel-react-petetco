@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\PermissionsEnum;
+use App\Http\Requests\FeatureStoreRequest;
 use App\Http\Resources\FeatureListResource;
 use App\Http\Resources\FeatureResource;
 use App\Models\Feature;
@@ -63,16 +64,9 @@ class FeatureController extends Controller implements HasMiddleware
         return Inertia::render('Feature/Create');
     }
 
-    public function store(Request $request)
+    public function store(FeatureStoreRequest $request)
     {
-        $data = $request->validate([
-            'name' => ['required', 'string'],
-            'description' => ['nullable', 'string'],
-        ]);
-
-        $data['user_id'] = Auth::id();
-
-        Feature::create($data);
+        $request->user()->features()->create($request->validated());
 
         return to_route('feature.index')->with('success', 'Feature created successfully');
     }
