@@ -18,41 +18,40 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $userRole = Role::create(['name'=>RolesEnum::User->value]);
-        $adminRole = Role::create(['name'=>RolesEnum::Admin->value]);
-        $superadminRole = Role::create(['name'=>RolesEnum::SuperAdmin->value]);
-        $employeeRole = Role::create(['name'=>RolesEnum::Employee->value]);
-        $commenterRole = Role::create(['name'=>RolesEnum::Commenter->value]);
-        $vetmanngerRole = Role::create(['name'=>RolesEnum::VetManager->value]);
-        $doctorRole = Role::create(['name'=>RolesEnum::Doctor->value]);
-        
+        $userRole = Role::create(['name' => RolesEnum::User->value]);
+        $adminRole = Role::create(['name' => RolesEnum::Admin->value]);
+        $superadminRole = Role::create(['name' => RolesEnum::SuperAdmin->value]);
+        $employeeRole = Role::create(['name' => RolesEnum::Employee->value]);
+        $commenterRole = Role::create(['name' => RolesEnum::Commenter->value]);
+        $vetmanngerRole = Role::create(['name' => RolesEnum::VetManager->value]);
+        $doctorRole = Role::create(['name' => RolesEnum::Doctor->value]);
 
         $manageFeaturePermission = Permission::create(
             [
-                'name' => PermissionsEnum::ManageFeature->value
+                'name' => PermissionsEnum::ManageFeature->value,
             ]
-            );
+        );
 
         $manageCommentsPermission = Permission::create(
             [
-                'name' => PermissionsEnum::ManageComments->value
+                'name' => PermissionsEnum::ManageComments->value,
             ]
-            );
+        );
 
         $manageUsersPermission = Permission::create(
             [
-                'name' => PermissionsEnum::ManageUsers->value
+                'name' => PermissionsEnum::ManageUsers->value,
             ]
-            );
+        );
         $upvoteDownvotePermission = Permission::create(
             [
-                'name' => PermissionsEnum::UpvoteDownvote->value
+                'name' => PermissionsEnum::UpvoteDownvote->value,
             ]
-            );
+        );
 
         $userRole->syncPermissions($upvoteDownvotePermission);
-        $commenterRole -> syncPermissions([$manageCommentsPermission,$upvoteDownvotePermission]);
-        $adminRole ->syncPermissions([$manageCommentsPermission,$upvoteDownvotePermission,$manageUsersPermission,$manageFeaturePermission]);     
+        $commenterRole->syncPermissions([$manageCommentsPermission, $upvoteDownvotePermission]);
+        $adminRole->syncPermissions([$manageCommentsPermission, $upvoteDownvotePermission, $manageUsersPermission, $manageFeaturePermission]);
 
         User::factory()->create([
             'name' => 'User User',
@@ -72,7 +71,6 @@ class DatabaseSeeder extends Seeder
             'password' => '123456789',
         ])->assignRole(RolesEnum::Admin);
 
-
-        Feature:: factory(100)->create();
+        Feature::factory(100)->create();
     }
 }
