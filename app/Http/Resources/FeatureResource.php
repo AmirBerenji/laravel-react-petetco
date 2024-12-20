@@ -2,9 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Feature;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Feature
+ */
 class FeatureResource extends JsonResource
 {
     public static $wrap = false;
@@ -18,8 +22,8 @@ class FeatureResource extends JsonResource
             'user' => new UserResource($this->user),
             'created_at' => $this->created_at->format('Y-m-h H:i:s'),
             'upvote_count' => $this->upvote_count ?: 0,
-            'user_has_upvoted' => (bool) $this->user_has_upvoted,
-            'user_has_downvoted' => (bool) $this->user_has_downvoted,
+            'user_has_upvoted' => (bool)$this->user_has_upvoted,
+            'user_has_downvoted' => (bool)$this->user_has_downvoted,
             'comments' => $this->comments->map(function ($comment) {
                 return [
                     'id' => $comment->id,

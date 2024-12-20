@@ -79,7 +79,6 @@ class FeatureController extends Controller implements HasMiddleware
 
     public function show(Feature $feature)
     {
-
         $feature->upvote_count = Upvote::where('feature_id', $feature->id)
             ->selectRaw('SUM(CASE WHEN upvote = 1 THEN 1 ELSE -1 END) as upvote_sum')
             ->value('upvote_sum') ?? 0;
