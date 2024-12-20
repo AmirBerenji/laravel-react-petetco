@@ -17,7 +17,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::redirect('/', '/dashboard');
+//Route::redirect('/', '/dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
