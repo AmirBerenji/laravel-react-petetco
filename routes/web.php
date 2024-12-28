@@ -1,6 +1,7 @@
 <?php
 
 use App\Enum\RolesEnum;
+use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\ProfileController;
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/dashboard', function () {
                 return Inertia::render('Dashboard');
             })->name('dashboard');
+
+            Route::resource('clinic', clinicController::class);
 
             Route::resource('feature', FeatureController::class);
 
