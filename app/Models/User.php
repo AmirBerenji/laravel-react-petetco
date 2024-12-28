@@ -59,4 +59,9 @@ class User extends Authenticatable //implements MustVerifyEmail
     {
         return $this->hasMany(Feature::class, 'foreign_key', 'local_key');
     }
+
+    public function clinics(): HasMany
+    {
+        return $this->hasMany(Clinic::class);
+    }
 }

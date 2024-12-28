@@ -188,7 +188,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Interface implementations
+    | Interfaces implementations
     |--------------------------------------------------------------------------
     |
     | These interfaces will be replaced with the implementing class. Some interfaces
