@@ -4,8 +4,9 @@ import TextInput from "@/Components/TextInput";
 import { Clinic } from "@/types/clinic";
 import { useForm } from "@inertiajs/react";
 import React, { FormEventHandler } from "react";
+import BranchList from "@/Pages/Clinic/Partial/branchList";
 
-export default function ClinicEdit({ clinic }: { clinic: Clinic }) {
+export default function ClinicInformation({ clinic }: { clinic: Clinic }) {
 
   const { data, setData, processing, errors, post } = useForm({
     name: clinic.name,
@@ -19,8 +20,6 @@ export default function ClinicEdit({ clinic }: { clinic: Clinic }) {
       preserveScroll: true,
     });
   };
-
-  console.log(clinic);
 
   return (
     <>
@@ -39,7 +38,7 @@ export default function ClinicEdit({ clinic }: { clinic: Clinic }) {
 
             <form className="w-full mt-8">
               <div className="mb-2">
-                <InputLabel htmlFor="name" value="Name" />
+                <InputLabel htmlFor="name" value="Name"/>
 
                 <TextInput
                   id="name"
@@ -59,6 +58,9 @@ export default function ClinicEdit({ clinic }: { clinic: Clinic }) {
           </section>
         </div>
       </div>
+
+      <BranchList branches={clinic.branches}/>
+
     </>
   );
 }

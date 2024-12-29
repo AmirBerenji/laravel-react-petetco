@@ -2,7 +2,7 @@
 
 namespace App\DTO;
 
-use App\Models\User;
+use App\Models\Clinic;
 use Spatie\LaravelData\Data;
 
 class BranchDto extends Data
@@ -18,8 +18,6 @@ class BranchDto extends Data
 
         public string $email,
 
-        public int $clinic_id,
-
-        public User $user
+        public Clinic $clinic,
     ) {}
 }

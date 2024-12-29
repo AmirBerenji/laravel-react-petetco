@@ -19,17 +19,19 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Vite::prefetch(concurrency: 3);
-        $this->app->bind(ClinicBranchAddDto::class, function ($app) {
-            $request = $app->make(Request::class);
 
-            return new ClinicBranchAddDto(
-                name: $request->input('name'),
-                address: $request->input('address'),
-                phone: $request->input('phone'),
-                email: $request->input('email'),
-                user: $request->user()
-            );
-        });
+        //
+        //        $this->app->bind(ClinicBranchAddDto::class, function ($app) {
+        //            $request = $app->make(Request::class);
+        //
+        //            return new ClinicBranchAddDto(
+        //                name: $request->input('name'),
+        //                address: $request->input('address'),
+        //                phone: $request->input('phone'),
+        //                email: $request->input('email'),
+        //                user: $request->user()
+        //            );
+        //        });
 
     }
 }
