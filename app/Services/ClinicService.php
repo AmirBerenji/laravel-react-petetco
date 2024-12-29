@@ -17,27 +17,40 @@ class ClinicService implements IClinicRepository
      */
     public function getByUser(User $user): Collection
     {
-        $clinics = $user->clinics()->get();
+        $clinics = $user->clinics()->with('branches')->get();
 
         return ClinicDto::collect($clinics);
     }
 
-    public function addClinic(ClinicBranchAddDto $clinic): Clinic
+    private function uploadImage(array $files, string $category, Clinic $clinic): void
     {
-        $result = $clinic->user->clinics()->create(['name' => $clinic->name]);
+        if (isset($files[$category])) {
+            $clinic->addMedia($files[$category])->toMediaCollection($category);
+        }
+    }
 
-        if ($result) {
-            $branchDto = new BranchDto(id: null,
+    public function addClinic(ClinicBranchAddDto $clinic): Collection
+    {
+        $newClinic = $clinic->user->clinics()->create(['name' => $clinic->name]);
+
+        if ($newClinic) {
+
+            foreach (['logo', 'banner'] as $category) {
+                $this->uploadImage($clinic->files, $category, $newClinic);
+            }
+
+            $branchDto = new BranchDto(
+                id: null,
                 name: $clinic->name,
                 phone: $clinic->phone,
                 address: $clinic->address,
                 email: $clinic->email,
-                clinic_id: $result->id,
-                user: $clinic->user);
-            $branchService = new BranchService;
-            $branchService->addBranch($branchDto);
+                clinic: $newClinic
+            );
+
+            (new BranchService)->addBranch($branchDto);
         }
 
-        return $result;
+        return $this->getByUser($clinic->user);
     }
 }

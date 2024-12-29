@@ -13,6 +13,7 @@ class ClinicBranchAddDto extends Data
         public string $phone,
         public string $email,
         public User $user,
+        public ?array $files
     ) {}
 
     public static function rules(): array

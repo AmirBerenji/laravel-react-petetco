@@ -1,4 +1,4 @@
-import React, {FormEventHandler} from 'react'
+import React, {FormEventHandler, useState} from 'react'
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import PrimaryButton from "@/Components/PrimaryButton";
@@ -15,7 +15,9 @@ export default function ClinicFirstTime() {
     name:'',
     email:'',
     address:'',
-    phone:''
+    phone:'',
+    logo:File,
+    banner:File
   })
 
 
@@ -27,6 +29,9 @@ export default function ClinicFirstTime() {
     })
   }
 
+  const handleFileChange = ({e}: { e: File[] }) => {
+
+  };
   return (
     <>
       <div className="mb-4 overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
@@ -42,7 +47,7 @@ export default function ClinicFirstTime() {
               </p>
             </header>
 
-            <form  onSubmit={createClinic} className="w-full mt-8">
+            <form onSubmit={createClinic} className="w-full mt-8" encType="multipart/form-data" >
               <div className="mb-2">
                 <InputLabel htmlFor="name" value="Name"/>
 
@@ -96,18 +101,71 @@ export default function ClinicFirstTime() {
                   className="mt-1 block w-full"
                   placeholder="Address of Clinic"
                   required
-
                   value={data.address}
                   onChange={(e) => setData("address", e.target.value)}
                   autoComplete="address-level1"
                 />
               </div>
 
-              <div className="flex items-center gap-4">
-                <PrimaryButton disabled={processing} >Save</PrimaryButton>
+              <div className="mb-2">
+                <InputLabel value="Logo"/>
 
+                <div className="flex justify-center">
+                  <input
+                    className="hidden"
+                    type="file"
+                    id="logo"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        data.logo=file;
+                      }
+                    }}
+                  />
+                  <label htmlFor="logo" className="cursor-pointer">
+                    <img
+                      src="images/dashboard/sampleLogo.jpg"
+                      width="120"
+                      height="120"
+                      alt="hero 1"
+
+                      className="rounded-md border border-1 border-gray-200 "
+                    />
+                  </label>
+                </div>
               </div>
-            </form>
+
+              <div className="mb-2">
+                <InputLabel value="Banner"/>
+                <div className="flex justify-center">
+                  <input
+                    className="hidden"
+                    type="file"
+                    id="banner"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        data.banner=file;
+                      }
+                    }}
+                  />
+                  <label  htmlFor="banner" className="cursor-pointer">
+                    <img
+                      src="images/dashboard/banner.jpg"
+                      width="600"
+                      height="560"
+                      alt="hero 1"
+                      className="rounded-md border border-1 border-gray-200"
+                    />
+                  </label>
+              </div>
+
+        </div>
+
+        <div className="flex items-center gap-4">
+          <PrimaryButton disabled={processing}>Save</PrimaryButton>
+        </div>
+      </form>
           </section>
         </div>
       </div>

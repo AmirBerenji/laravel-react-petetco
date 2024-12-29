@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTO\ClinicBranchAddDto;
+use App\Http\Requests\Clinic\ClinicStoreRequest;
 use App\Services\ClinicService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -34,12 +35,14 @@ class ClinicController extends Controller implements HasMiddleware
     //    }
     //
 
-    public function store(ClinicBranchAddDto $request)
+    public function store(ClinicStoreRequest $request)
     {
-        $this->clinicService->addClinic($request);
+        $dto = ClinicBranchAddDto::from(array_merge($request->validated(), ['user' => $request->user(), 'files' => $request->allFiles()]));
+        $this->clinicService->addClinic($dto);
 
         return back()->with('success', 'Clinic added successfully.');
     }
+
     //
     //    public function show(string $id)
     //    {
