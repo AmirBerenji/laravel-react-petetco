@@ -13,7 +13,7 @@ class ClinicBranchAddDto extends Data
         public string $phone,
         public string $email,
         public User $user,
-        public ?array $files
+        public array $files = []
     ) {}
 
     public static function rules(): array
@@ -23,6 +23,8 @@ class ClinicBranchAddDto extends Data
             'email' => 'nullable|email',
             'phone' => 'required|string|max:15',
             'address' => 'required|string',
+            'logo' => 'image|size:5000',
+            'banner' => 'image|size:5000',
         ];
     }
 }

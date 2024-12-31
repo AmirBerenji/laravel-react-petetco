@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 /**
  * @mixin IdeHelperClinic
@@ -29,34 +31,18 @@ class Clinic extends Model implements HasMedia
         return $this->belongsTo(User::class);
     }
 
-    public function uploadImage(array $files): void
+    /**
+     * @throws FileDoesNotExist
+     * * @throws FileIsTooBig
+     */
+    public function uploadImage(UploadedFile $file, string $key): void
     {
-        foreach (ClinicMediaCategory::cases() as $category) {
-            $file = $files[$category->value] ?? null;
+        $type = ClinicMediaCategory::tryFrom($key);
 
-            if ($file && $this->isValidImage($file)) {
-                $this->addMedia($file)->toMediaCollection($category->value);
-            }
-        }
-    }
-
-    private function isValidImage(UploadedFile $file): bool
-    {
-
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-        if (! in_array($file->getClientOriginalExtension(), $allowedExtensions)) {
-            return false;
+        if (!$type || empty($file->path())) {
+            return;
         }
 
-        $maxFileSize = 5 * 1024 * 1024; // 5 MB in bytes
-        if ($file->getSize() > $maxFileSize) {
-            return false;
-        }
-
-        if (! in_array($file->getMimeType(), ['image/jpeg', 'image/png', 'image/gif'])) {
-            return false;
-        }
-
-        return true;
+        $this->addMedia($file)->toMediaCollection($key);
     }
 }
