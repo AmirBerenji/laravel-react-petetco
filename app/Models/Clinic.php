@@ -2,20 +2,16 @@
 
 namespace App\Models;
 
+use App\Enum\ClinicMediaCategory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Support\Collection;
-use Spatie\MediaLibrary\Conversions\Conversion;
+use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\FileAdder;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * @method void prepareToAttachMedia(Media $media, FileAdder $fileAdder)
+ * @mixin IdeHelperClinic
  */
 class Clinic extends Model implements HasMedia
 {
@@ -31,5 +27,36 @@ class Clinic extends Model implements HasMedia
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function uploadImage(array $files): void
+    {
+        foreach (ClinicMediaCategory::cases() as $category) {
+            $file = $files[$category->value] ?? null;
+
+            if ($file && $this->isValidImage($file)) {
+                $this->addMedia($file)->toMediaCollection($category->value);
+            }
+        }
+    }
+
+    private function isValidImage(UploadedFile $file): bool
+    {
+
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+        if (! in_array($file->getClientOriginalExtension(), $allowedExtensions)) {
+            return false;
+        }
+
+        $maxFileSize = 5 * 1024 * 1024; // 5 MB in bytes
+        if ($file->getSize() > $maxFileSize) {
+            return false;
+        }
+
+        if (! in_array($file->getMimeType(), ['image/jpeg', 'image/png', 'image/gif'])) {
+            return false;
+        }
+
+        return true;
     }
 }

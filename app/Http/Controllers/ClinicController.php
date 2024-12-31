@@ -28,12 +28,6 @@ class ClinicController extends Controller implements HasMiddleware
             'clinic' => $clinicDto,
         ]);
     }
-    //
-    //    public function create()
-    //    {
-    //        //
-    //    }
-    //
 
     public function store(ClinicStoreRequest $request)
     {
