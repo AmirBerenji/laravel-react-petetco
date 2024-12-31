@@ -6,7 +6,6 @@ use App\DTO\BranchDto;
 use App\DTO\ClinicBranchAddDto;
 use App\DTO\ClinicDto;
 use App\Interfaces\IClinicRepository;
-use App\Models\Clinic;
 use App\Models\User;
 use Illuminate\Support\Collection;
 
@@ -22,22 +21,13 @@ class ClinicService implements IClinicRepository
         return ClinicDto::collect($clinics);
     }
 
-    private function uploadImage(array $files, string $category, Clinic $clinic): void
-    {
-        if (isset($files[$category])) {
-            $clinic->addMedia($files[$category])->toMediaCollection($category);
-        }
-    }
-
     public function addClinic(ClinicBranchAddDto $clinic): Collection
     {
         $newClinic = $clinic->user->clinics()->create(['name' => $clinic->name]);
 
         if ($newClinic) {
 
-            foreach (['logo', 'banner'] as $category) {
-                $this->uploadImage($clinic->files, $category, $newClinic);
-            }
+            $newClinic->uploadImage($clinic->files);
 
             $branchDto = new BranchDto(
                 id: null,

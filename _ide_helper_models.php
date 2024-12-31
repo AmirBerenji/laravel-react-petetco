@@ -16,6 +16,75 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string $name
+ * @property string $phone
+ * @property string $email
+ * @property string $address
+ * @property int $clinic_id
+ * @property int $user_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Clinic|null $clinics
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereClinicId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperBranch {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @method void prepareToAttachMedia(Media $media, FileAdder $fileAdder)
+ * @property int $id
+ * @property string $name
+ * @property int $user_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Branch> $branches
+ * @property-read int|null $branches_count
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read int|null $media_count
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Clinic newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Clinic newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Clinic query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Clinic whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Clinic whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Clinic whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Clinic whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Clinic whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Clinic whereUserId($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperClinic {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property string $comment
  * @property int $feature_id
  * @property int $user_id
@@ -107,6 +176,8 @@ namespace App\Models{
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Clinic> $clinics
+ * @property-read int|null $clinics_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Feature> $features
  * @property-read int|null $features_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
