@@ -6,8 +6,11 @@ use App\DTO\BranchDto;
 use App\DTO\ClinicBranchAddDto;
 use App\DTO\ClinicDto;
 use App\Interfaces\IClinicRepository;
+use App\Models\Clinic;
 use App\Models\User;
 use Illuminate\Support\Collection;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class ClinicService implements IClinicRepository
 {
@@ -21,13 +24,21 @@ class ClinicService implements IClinicRepository
         return ClinicDto::collect($clinics);
     }
 
+    /**
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
+     */
     public function addClinic(ClinicBranchAddDto $clinic): Collection
     {
+        /** @var Clinic $newClinic */
         $newClinic = $clinic->user->clinics()->create(['name' => $clinic->name]);
 
         if ($newClinic) {
 
-            $newClinic->uploadImage($clinic->files);
+            foreach ($clinic->files as $key => $file) {
+                $newClinic->uploadImage($file, $key);
+            }
+
 
             $branchDto = new BranchDto(
                 id: null,
