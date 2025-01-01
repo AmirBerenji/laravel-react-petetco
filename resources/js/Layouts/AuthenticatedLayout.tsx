@@ -21,6 +21,12 @@ export default function Authenticated({
       <Header userName={user.name}/>
       <SideMenu/>
       <main id="main" className="main">
+
+        {success&&<div className="alert alert-info alert-dismissible fade show w-1/3 absolute z-50 right-10 " role="alert">
+          {success}
+          <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>}
+
         {children}
       </main>
 

@@ -23,18 +23,28 @@ class ClinicController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         $clinicDto = $this->clinicService->getByUser($request->user());
+        if ($clinicDto->count() > 0) {
+            return Inertia::render('Clinic/Index', [
+                'clinics' => $clinicDto,
+            ]);
+        }
 
-        return Inertia::render('Clinic/Index', [
-            'clinic' => $clinicDto,
-        ]);
+        return Inertia::render('Clinic/Create');
+    }
+
+    public function create()
+    {
+        return Inertia::render('Clinic/Create');
     }
 
     public function store(ClinicStoreRequest $request)
     {
         $dto = ClinicBranchAddDto::from(array_merge($request->validated(), ['user' => $request->user(), 'files' => $request->allFiles()]));
-        $this->clinicService->addClinic($dto);
+        $clinicDto = $this->clinicService->addClinic($dto);
 
-        return back()->with('success', 'Clinic added successfully.');
+        return Inertia::render('Clinic/Index', [
+            'clinics' => $clinicDto,
+        ])->with('success', 'Clinic added successfully.');
     }
 
     //
