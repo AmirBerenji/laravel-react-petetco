@@ -7,6 +7,7 @@ use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UpvoteController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Web\BranchController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -35,7 +36,9 @@ Route::middleware('auth')->group(function () {
                 return Inertia::render('Dashboard');
             })->name('dashboard');
 
-            Route::resource('clinic', clinicController::class);
+            Route::resource('clinic', ClinicController::class);
+
+            Route::resource('branch', BranchController::class);
 
             Route::resource('feature', FeatureController::class);
 

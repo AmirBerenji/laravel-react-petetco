@@ -1,8 +1,10 @@
 import React from 'react'
 import {Branch} from "@/types/branch";
 import PrimaryButton from "@/Components/PrimaryButton";
+import {Link} from "@inertiajs/react";
 
 export default function BranchList({branches}:{branches:Branch[]}) {
+
   return (
     <div className="mb-4 overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
       <div className="p-6 text-gray-900 dark:text-gray-100 flex gap-8 ">
@@ -11,7 +13,13 @@ export default function BranchList({branches}:{branches:Branch[]}) {
             <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
               Edit your branch or Add new branch
             </h2>
-            <PrimaryButton className="w-36">New Branch</PrimaryButton>
+            <Link href={route("branch.create")}
+                  className=" mb-3 inline-flex items-center rounded-md border border-transparent bg-[#7395AE] px-4
+                  py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out
+                  hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+                  active:bg-gray-900 dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300" >Add New Branch</Link>
+
+
           </header>
 
 

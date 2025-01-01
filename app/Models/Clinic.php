@@ -33,16 +33,21 @@ class Clinic extends Model implements HasMedia
 
     /**
      * @throws FileDoesNotExist
-     * * @throws FileIsTooBig
+     *                          * @throws FileIsTooBig
      */
     public function uploadImage(UploadedFile $file, string $key): void
     {
         $type = ClinicMediaCategory::tryFrom($key);
 
-        if (!$type || empty($file->path())) {
+        if (! $type || empty($file->path())) {
             return;
         }
 
         $this->addMedia($file)->toMediaCollection($key);
+    }
+
+    public function getImageUrl(string $key): string
+    {
+        return $this->getMedia($key)->first()->getUrl();
     }
 }

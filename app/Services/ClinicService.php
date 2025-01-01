@@ -6,6 +6,7 @@ use App\DTO\BranchDto;
 use App\DTO\ClinicBranchAddDto;
 use App\DTO\ClinicDto;
 use App\Interfaces\IClinicRepository;
+use App\Jobs\SendNewClinicEmail;
 use App\Models\Clinic;
 use App\Models\User;
 use Illuminate\Support\Collection;
@@ -21,7 +22,7 @@ class ClinicService implements IClinicRepository
     {
         $clinics = $user->clinics()->with('branches')->get();
 
-        return ClinicDto::collect($clinics);
+        return ClinicDto::collectFromClinics($clinics);
     }
 
     /**
@@ -33,12 +34,13 @@ class ClinicService implements IClinicRepository
         /** @var Clinic $newClinic */
         $newClinic = $clinic->user->clinics()->create(['name' => $clinic->name]);
 
+        SendNewClinicEmail::dispatch($clinic->user);
+
         if ($newClinic) {
 
             foreach ($clinic->files as $key => $file) {
                 $newClinic->uploadImage($file, $key);
             }
-
 
             $branchDto = new BranchDto(
                 id: null,
