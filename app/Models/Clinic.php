@@ -50,4 +50,16 @@ class Clinic extends Model implements HasMedia
     {
         return $this->getMedia($key)->first()->getUrl();
     }
+
+    public function editImage(UploadedFile $file, string $key): void
+    {
+        $type = ClinicMediaCategory::tryFrom($key);
+
+        if (! $type || empty($file->path())) {
+            return;
+        }
+
+        $this->clearMediaCollection($key);
+        $this->addMedia($file)->toMediaCollection($key);
+    }
 }

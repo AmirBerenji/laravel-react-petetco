@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTO\BranchDto;
 use App\DTO\ClinicBranchAddDto;
 use App\DTO\ClinicDto;
+use App\DTO\CliniceditDto;
 use App\Interfaces\IClinicRepository;
 use App\Jobs\SendNewClinicEmail;
 use App\Models\Clinic;
@@ -52,6 +53,26 @@ class ClinicService implements IClinicRepository
             );
 
             (new BranchService)->addBranch($branchDto);
+        }
+
+        return $this->getByUser($clinic->user);
+    }
+
+    /**
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
+     */
+    public function editClinic(CliniceditDto $clinic): collection
+    {
+        /** @var Clinic $oldClinic */
+        $oldClinic = $clinic->user->clinics()->where('id', $clinic->id)->first();
+
+        if ($oldClinic) {
+            $oldClinic->update(['name' => $clinic->name]);
+
+            foreach ($clinic->files as $key => $file) {
+                $oldClinic->editImage($file, $key);
+            }
         }
 
         return $this->getByUser($clinic->user);

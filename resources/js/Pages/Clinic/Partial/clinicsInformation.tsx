@@ -41,7 +41,7 @@ export default function ClinicsInformation({ clinics }: { clinics: Clinic[] }) {
                       aria-labelledby={headingId}
                       data-bs-parent="#clinicAccordion"
                     >
-                      <ClinicInformation clinicInfo={clinic}/>
+                      <ClinicInformation clinicInfo={clinic} key={clinic.id}/>
                     </div>
                   </div>
                 );
