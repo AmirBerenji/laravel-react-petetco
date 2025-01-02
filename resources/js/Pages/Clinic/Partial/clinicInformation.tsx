@@ -2,14 +2,14 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Clinic } from "@/types/clinic";
-import { useForm } from "@inertiajs/react";
+import {router, useForm} from "@inertiajs/react";
 import React, { FormEventHandler } from "react";
 import BranchList from "@/Pages/Clinic/Partial/branchList";
-import {FirstClinicType} from "@/types/firstClinicType";
+import InputError from "@/Components/InputError";
 
 export default function ClinicInformation({ clinicInfo }: { clinicInfo: Clinic }) {
 
-  const { data, setData, processing, errors, post } = useForm<Clinic>({
+  const { data, setData, processing, progress,errors, post } = useForm<Clinic>({
     banner: clinicInfo.banner,
     branches: clinicInfo.branches,
     logo: clinicInfo.logo,
@@ -17,13 +17,24 @@ export default function ClinicInformation({ clinicInfo }: { clinicInfo: Clinic }
     id: clinicInfo.id,
   });
 
-
-  const createClinic: FormEventHandler = (ev) => {
+  const updateClinic: FormEventHandler = (ev) => {
     ev.preventDefault();
 
-    post(route("clinic.update"), {
-      preserveScroll: true,
-    });
+    data.logo = typeof data.logo === "string"
+      ? null // Use the string URL directly
+      : data.logo
+
+    data.banner = typeof data.banner === "string"
+      ? null // Use the string URL directly
+      : data.banner
+
+      router.post(`/clinic/${clinicInfo.id}`,{
+        _method: 'put',
+        banner: data.banner,
+        logo: data.logo,
+        name: data.name,
+        id: data.id,
+      });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof Clinic) => {
@@ -47,7 +58,12 @@ export default function ClinicInformation({ clinicInfo }: { clinicInfo: Clinic }
               </p>
             </header>
 
-            <form className="w-full mt-8">
+            <form onSubmit={updateClinic} className="w-full mt-8" encType="multipart/form-data"  >
+              {progress && (
+                <progress value={progress.percentage} max="100">
+                  {progress.percentage}%
+                </progress>
+              )}
               <div className="mb-2">
                 <InputLabel htmlFor="name" value="Name"/>
 
@@ -60,18 +76,20 @@ export default function ClinicInformation({ clinicInfo }: { clinicInfo: Clinic }
                   onChange={(e) => setData("name", e.target.value)}
                   autoComplete="name"
                 />
+                <InputError message={errors.name} className="mt-2" />
               </div>
 
               <div className="mb-2">
                 <InputLabel value="Logo"/>
+                <InputError message={errors.logo} className="mt-2" />
                 <div className="flex ml-5">
                   <input
                     className="hidden"
                     type="file"
-                    id="logo"
+                    id={`logo${clinicInfo.id.toString()}`}
                     onChange={(e) => handleFileChange(e, 'logo')}
                   />
-                  <label htmlFor="logo" className="cursor-pointer">
+                  <label htmlFor={`logo${clinicInfo.id.toString()}`}className="cursor-pointer">
                     <img
                       src={
                         typeof data.logo === "string"
@@ -86,33 +104,36 @@ export default function ClinicInformation({ clinicInfo }: { clinicInfo: Clinic }
                       className="rounded-md border border-1 border-gray-200 "
                     />
                   </label>
+
                 </div>
               </div>
 
               <div className="mb-2">
                 <InputLabel value="Banner"/>
+
                 <div className="flex ml-5">
                   <input
                     className="hidden"
                     type="file"
-                    id="banner"
+                    id={`banner${clinicInfo.id.toString()}`}
                     onChange={(e) => handleFileChange(e, 'banner')}
                   />
-                  <label htmlFor="banner" className="cursor-pointer">
+
+                  <label htmlFor={`banner${clinicInfo.id.toString()}`} className="cursor-pointer">
                     <img
                       src={
                         typeof data.banner === "string"
                           ? data.banner // Use the string URL directly
                           : data.banner
                             ? URL.createObjectURL(data.banner) // Generate a URL for the File object
-                            : ""
-                      }
+                            : ""}
                       width={600}
                       height={560}
                       alt="hero 1"
                       className="rounded-md border border-1 border-gray-200"
                     />
                   </label>
+
                 </div>
               </div>
               <div className="flex items-center gap-4">
