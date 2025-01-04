@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\DTO\BranchDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Branch\BranchStoreRequest;
+use App\Models\Clinic;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Inertia\Inertia;
@@ -27,18 +30,20 @@ class BranchController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Clinic $clinic)
     {
 
-        return Inertia::render('Branch/Create');
+        return Inertia::render('Branch/Create', ['clinic' => $clinic]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BranchStoreRequest $request)
     {
-        dd($request);
+        $dto = BranchDto::from(array_merge($request->validated(), ['user' => $request->user()]));
+        dd($dto);
+
     }
 
     /**

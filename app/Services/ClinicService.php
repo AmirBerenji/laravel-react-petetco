@@ -10,12 +10,15 @@ use App\Interfaces\IClinicRepository;
 use App\Jobs\SendNewClinicEmail;
 use App\Models\Clinic;
 use App\Models\User;
+use App\Traits\UploadImageTrait;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class ClinicService implements IClinicRepository
 {
+    use UploadImageTrait;
+
     /**
      * @return Collection<ClinicDto>
      */
@@ -39,9 +42,7 @@ class ClinicService implements IClinicRepository
 
         if ($newClinic) {
 
-            foreach ($clinic->files as $key => $file) {
-                $newClinic->uploadImage($file, $key);
-            }
+            $this->handleImages($newClinic, $clinic->files);
 
             $branchDto = new BranchDto(
                 id: null,
@@ -68,7 +69,7 @@ class ClinicService implements IClinicRepository
         $oldClinic = $clinic->user->clinics()->where('id', $clinic->id)->first();
 
         if ($oldClinic) {
-            $oldClinic->update(['name' => $clinic->name]);
+            $this->handleImages($oldClinic, $clinic->files, true);
 
             foreach ($clinic->files as $key => $file) {
                 $oldClinic->editImage($file, $key);

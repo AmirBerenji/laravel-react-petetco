@@ -14,7 +14,7 @@ export default function Create({clinic}:{clinic:Clinic} ) {
     email: '',
     address: '',
     phone: '',
-    clinic_id:0
+    clinic_id:clinic.id
   });
 
   const createBranch: FormEventHandler = (ev) => {
