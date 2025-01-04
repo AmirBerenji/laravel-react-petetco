@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enum\ClinicMediaCategory;
+use App\Traits\UploadImageTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,6 +19,7 @@ use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 class Clinic extends Model implements HasMedia
 {
     use InteractsWithMedia;
+    use UploadImageTrait;
 
     protected $fillable = ['user_id', 'name'];
 

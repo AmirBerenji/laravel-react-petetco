@@ -5,7 +5,7 @@ namespace App\DTO;
 use App\Models\User;
 use Spatie\LaravelData\Data;
 
-class CliniceditDto extends Data
+class ClinicEditDto extends Data
 {
     public function __construct(
         public int $id,
