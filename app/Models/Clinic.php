@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Enum\ClinicMediaCategory;
+use App\Observers\ClinicObserver;
 use App\Traits\UploadImageTrait;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,6 +19,7 @@ use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 /**
  * @mixin IdeHelperClinic
  */
+#[ObservedBy([ClinicObserver::class])]
 class Clinic extends Model implements HasMedia
 {
     use InteractsWithMedia;
