@@ -8,14 +8,18 @@ import {Branch} from "@/types/branch";
 import {Clinic} from "@/types/clinic";
 
 export default function Create({clinic}:{clinic:Clinic} ) {
+
+  console.log("Create Branch",clinic);
+
   const { data, setData, processing, post } = useForm<Branch>({
-    id:null,
+    id:0,
     name: '',
     email: '',
     address: '',
     phone: '',
-    clinic_id:clinic.id
+    clinic:clinic
   });
+  console.log("data:",data);
 
   const createBranch: FormEventHandler = (ev) => {
     ev.preventDefault();

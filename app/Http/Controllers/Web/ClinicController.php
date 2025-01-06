@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
 use App\DTO\ClinicBranchAddDto;
 use App\DTO\ClinicEditDto;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Clinic\ClinicStoreRequest;
 use App\Http\Requests\Clinic\ClinicUpdateRequest;
+use App\Models\Clinic;
 use App\Services\ClinicService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -20,7 +22,9 @@ class ClinicController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __construct(protected ClinicService $clinicService) {}
+    public function __construct(protected ClinicService $clinicService)
+    {
+    }
 
     public function index(Request $request)
     {
@@ -51,17 +55,6 @@ class ClinicController extends Controller implements HasMiddleware
         ])->with('success', 'Clinic added successfully.');
     }
 
-    //
-    //    public function show(string $id)
-    //    {
-    //        //
-    //    }
-    //
-    //    public function edit(string $id)
-    //    {
-    //        //
-    //    }
-    //
     public function update(ClinicUpdateRequest $request)
     {
         $dto = ClinicEditDto::from(array_merge($request->validated(), ['user' => $request->user(), 'files' => $request->allFiles()]));
@@ -72,9 +65,13 @@ class ClinicController extends Controller implements HasMiddleware
             'clinics' => $clinicDto,
         ])->with('success', 'Clinic edited successfully.');
     }
-    //
-    //    public function destroy(string $id)
-    //    {
-    //        //
-    //    }
+
+    public function destroy(Clinic $clinic)
+    {
+        $clinicDto = $this->clinicService->deleteClinic($clinic);
+
+        return Inertia::render('Clinic/Index', [
+            'clinics' => $clinicDto,
+        ])->with('success', 'Clinic edited successfully.');
+    }
 }

@@ -29,6 +29,7 @@ class BranchDto extends Data
             'email' => 'nullable|email',
             'phone' => 'required|string|max:15',
             'address' => 'required|string',
+            'clinic' => 'required',
         ];
     }
 }

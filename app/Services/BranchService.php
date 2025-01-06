@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\BranchDto;
+use App\Models\Branch;
 
 class BranchService
 {
@@ -15,5 +16,10 @@ class BranchService
             'email' => $entity->email,
             'user_id' => $entity->clinic->user_id,
         ]);
+    }
+
+    public function deleteBranch(Branch $branche): void
+    {
+        $branche->delete();
     }
 }

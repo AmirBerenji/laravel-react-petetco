@@ -2,10 +2,11 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Clinic } from "@/types/clinic";
-import {router, useForm} from "@inertiajs/react";
+import {Link, router, useForm} from "@inertiajs/react";
 import React, { FormEventHandler } from "react";
-import BranchList from "@/Pages/Clinic/Partial/branchList";
+import BranchList from "@/Pages/Branch/Partial/branchList";
 import InputError from "@/Components/InputError";
+import {Inertia} from "@inertiajs/inertia";
 
 export default function ClinicInformation({ clinicInfo }: { clinicInfo: Clinic }) {
 
@@ -36,6 +37,12 @@ export default function ClinicInformation({ clinicInfo }: { clinicInfo: Clinic }
         id: data.id,
       });
   };
+
+  function deleteClinic(id:number) {
+    if (confirm("Are you sure you want to delete this clinic?")) {
+      Inertia.delete(route("clinic.destroy", id));
+    }
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof Clinic) => {
     const file = e.target.files?.[0];
@@ -138,13 +145,23 @@ export default function ClinicInformation({ clinicInfo }: { clinicInfo: Clinic }
               </div>
               <div className="flex items-center gap-4">
                 <PrimaryButton disabled={processing}>Edit</PrimaryButton>
+                <Link
+                  href="#"
+                  onClick={() => deleteClinic(clinicInfo.id)}
+                  className="inline-flex items-center rounded-md border border-transparent bg-red-700 px-4
+              py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out
+              hover:bg-red-900 focus:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-offset-2
+              active:bg-red-600"
+                >
+                  Delete Clinic
+                </Link>
               </div>
             </form>
           </section>
         </div>
       </div>
 
-      <BranchList branches={clinicInfo.branches}/>
+      <BranchList branches={clinicInfo.branches} clinic={clinicInfo}/>
 
     </>
   );
