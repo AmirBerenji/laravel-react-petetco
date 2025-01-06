@@ -24,9 +24,7 @@ class ClinicController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __construct(protected ClinicService $clinicService)
-    {
-    }
+    public function __construct(protected ClinicService $clinicService) {}
 
     public function index(Request $request)
     {
@@ -51,7 +49,7 @@ class ClinicController extends Controller implements HasMiddleware
         $dto = ClinicBranchAddDto::from([
             'user' => $request->user(),
             'files' => $request->allFiles(),
-            ...$request->validated()
+            ...$request->validated(),
         ]);
 
         $this->clinicService->addClinic($dto);

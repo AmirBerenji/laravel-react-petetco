@@ -9,6 +9,6 @@ class ClinicObserver
 {
     public function deleted(Clinic $clinic): void
     {
-        $clinic->branches->each(fn(Branch $branch) => $branch->delete());
+        $clinic->branches->each(fn (Branch $branch) => $branch->delete());
     }
 }

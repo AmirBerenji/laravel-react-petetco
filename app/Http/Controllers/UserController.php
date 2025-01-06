@@ -43,7 +43,7 @@ class UserController extends Controller implements HasMiddleware
     {
         $data = $request->validate([
             'roles' => ['required', 'array'],
-            'name' => ['required','string'],
+            'name' => ['required', 'string'],
         ]);
         $user->update($data);
 

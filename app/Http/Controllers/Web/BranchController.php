@@ -21,9 +21,7 @@ class BranchController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __construct(protected BranchService $branchService, protected ClinicService $clinicService)
-    {
-    }
+    public function __construct(protected BranchService $branchService, protected ClinicService $clinicService) {}
 
     public function create(Clinic $clinic)
     {

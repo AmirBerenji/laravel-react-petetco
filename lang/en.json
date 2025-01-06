@@ -1,5 +1,6 @@
 {
     "created_clinic": "Clinic has been added successfully.",
     "updated_clinic": "Clinic has been updated successfully.",
-    "deleted_clinic": "Clinic has been deleted successfully."
+    "deleted_clinic": "Clinic has been deleted successfully.",
+    "created_branch": "Branch has been added successfully."
 }
