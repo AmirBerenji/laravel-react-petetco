@@ -43,7 +43,9 @@ class UserController extends Controller implements HasMiddleware
     {
         $data = $request->validate([
             'roles' => ['required', 'array'],
+            'name' => ['required','string'],
         ]);
+        $user->update($data);
 
         $user->syncRoles($data['roles']);
 

@@ -30,7 +30,7 @@ export default function Show({ roles, user,roleLabels }: { roles: any; user: Use
     if(ev.target.checked){
       setData('roles',[ev.target.value])
     }
-    
+
   }
 
   return (
@@ -51,7 +51,6 @@ export default function Show({ roles, user,roleLabels }: { roles: any; user: Use
 
               <TextInput
                 id="name"
-                disabled
                 className="mt-1 block w-full"
                 value={data.name}
                 onChange={(e) => setData("name", e.target.value)}
@@ -83,7 +82,7 @@ export default function Show({ roles, user,roleLabels }: { roles: any; user: Use
             <div className="px-4 py-4">
               {roles.map((role: any) => (
                 <div key={role.id} className="py-1" >
-                  <Radio 
+                  <Radio
                   name="roles"
                   checked={data.roles.includes(role.name)}
                   value={role.name}
