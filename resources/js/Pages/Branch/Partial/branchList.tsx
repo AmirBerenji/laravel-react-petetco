@@ -9,11 +9,11 @@ export default function BranchList({branches,clinic}:{branches:Branch[],clinic:C
 
   function deleteBranch(id:number) {
     if (confirm("Are you sure you want to delete this branch?")) {
-      Inertia.delete(route("branch.destroy", id));
+      Inertia.delete(route("clinic.branch.destroy", id));
     }
   }
   function editBranch(id:number) {
-      Inertia.delete(route("branch.edit", id));
+      Inertia.put(route("branch.edit", id));
   }
 
   return (
@@ -24,7 +24,7 @@ export default function BranchList({branches,clinic}:{branches:Branch[],clinic:C
             <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
               Edit your branch or Add new branch
             </h2>
-            <Link href={route("branch.create",[clinic])}
+            <Link href={route("clinic.branch.create",[clinic])}
                   className=" mb-3 inline-flex items-center rounded-md border border-transparent bg-[#7395AE] px-4
                   py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out
                   hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2

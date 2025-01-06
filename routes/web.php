@@ -37,10 +37,7 @@ Route::middleware('auth')->group(function () {
             })->name('dashboard');
 
             Route::resource('clinic', ClinicController::class);
-
-            Route::get('/branch/{clinic}/create', [BranchController::class, 'create'])->name('branch.create');
-            Route::post('/branch/store', [BranchController::class, 'store'])->name('branch.store');
-            Route::delete('/branch/{branch}/destroy', [BranchController::class, 'destroy'])->name('branch.destroy');
+            Route::resource('clinic.branch', BranchController::class)->except(['index']);
 
             Route::resource('feature', FeatureController::class);
 
