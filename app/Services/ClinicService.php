@@ -12,8 +12,6 @@ use App\Models\Clinic;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class ClinicService implements IClinicRepository
 {
@@ -27,11 +25,7 @@ class ClinicService implements IClinicRepository
         return ClinicDto::collectFromClinics($clinics);
     }
 
-    /**
-     * @throws FileDoesNotExist
-     * @throws FileIsTooBig
-     */
-    public function addClinic(ClinicBranchAddDto $clinic): Collection
+    public function addClinic(ClinicBranchAddDto $clinic): Clinic
     {
         /** @var Clinic $newClinic */
         $newClinic = $clinic->user->clinics()->create(['name' => $clinic->name]);
@@ -54,13 +48,9 @@ class ClinicService implements IClinicRepository
             (new BranchService)->addBranch($branchDto);
         }
 
-        return $this->getByUser($clinic->user);
+        return $newClinic;
     }
 
-    /**
-     * @throws FileDoesNotExist
-     * @throws FileIsTooBig
-     */
     public function editClinic(CliniceditDto $clinic): collection
     {
         /** @var Clinic $oldClinic */
@@ -82,16 +72,5 @@ class ClinicService implements IClinicRepository
         } else {
             throw new ModelNotFoundException;
         }
-    }
-
-    public function deleteClinic(Clinic $clinic): Collection
-    {
-        $user = $clinic->user;
-        foreach ($clinic->branches as $branch) {
-            (new BranchService)->deleteBranch($branch);
-        }
-        $clinic->delete();
-
-        return $this->getByUser($clinic->user);
     }
 }
