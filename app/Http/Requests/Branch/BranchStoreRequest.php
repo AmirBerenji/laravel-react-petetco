@@ -18,6 +18,7 @@ class BranchStoreRequest extends FormRequest
             'email' => 'nullable|email',
             'phone' => 'required|string|max:15',
             'address' => 'required|string',
+            'clinic' => 'required',
         ];
     }
 }

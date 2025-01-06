@@ -10,6 +10,7 @@ use App\Interfaces\IClinicRepository;
 use App\Jobs\SendNewClinicEmail;
 use App\Models\Clinic;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
@@ -67,11 +68,29 @@ class ClinicService implements IClinicRepository
 
         if ($oldClinic) {
             $oldClinic->handleImages($clinic->files, true);
-
-            foreach ($clinic->files as $key => $file) {
-                $oldClinic->editImage($file, $key);
-            }
+            $oldClinic->update(['name' => $clinic->name]);
         }
+
+        return $this->getByUser($clinic->user);
+    }
+
+    public function getClinicById(int $id): Clinic
+    {
+        $clinic = Clinic::find($id);
+        if ($clinic) {
+            return $clinic;
+        } else {
+            throw new ModelNotFoundException;
+        }
+    }
+
+    public function deleteClinic(Clinic $clinic): Collection
+    {
+        $user = $clinic->user;
+        foreach ($clinic->branches as $branch) {
+            (new BranchService)->deleteBranch($branch);
+        }
+        $clinic->delete();
 
         return $this->getByUser($clinic->user);
     }

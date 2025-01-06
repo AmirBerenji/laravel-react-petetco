@@ -5,8 +5,6 @@ import React from "react";
 export default function ClinicsInformation({ clinics }: { clinics: Clinic[] }) {
   return (
     <>
-
-
       <div className="w-full">
         <div className="card">
           <div className="card-body">

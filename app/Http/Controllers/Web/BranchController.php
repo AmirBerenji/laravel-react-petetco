@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Web;
 use App\DTO\BranchDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Branch\BranchStoreRequest;
+use App\Models\Branch;
 use App\Models\Clinic;
+use App\Services\BranchService;
+use App\Services\ClinicService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Inertia\Inertia;
@@ -19,62 +22,51 @@ class BranchController extends Controller implements HasMiddleware
         ];
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    public function __construct(protected BranchService $branchService, protected ClinicService $clinicService) {}
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(Clinic $clinic)
     {
-
         return Inertia::render('Branch/Create', ['clinic' => $clinic]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(BranchStoreRequest $request)
     {
-        $dto = BranchDto::from(array_merge($request->validated(), ['user' => $request->user()]));
-        dd($dto);
+        $validate = $request->validated();
+        $branchDto = new BranchDto(
+            id: null,
+            name: $validate['name'],
+            phone: $validate['phone'],
+            address: $validate['address'],
+            email: $validate['email'],
+            clinic: $this->clinicService->getClinicById($validate['clinic']['id'])
+        );
+        $this->branchService->addBranch($branchDto);
+        $clinicDto = $this->clinicService->getByUser($request->user());
 
+        return Inertia::render('Clinic/Index', [
+            'clinics' => $clinicDto,
+        ])->with('success', 'Branch added successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Branch $branch)
     {
-        //
+        $this->branchService->deleteBranch($branch);
+
+        return to_route('clinic.index')->with('success', 'Branch deleted successfully');
     }
 }

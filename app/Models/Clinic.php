@@ -7,6 +7,7 @@ use App\Traits\UploadImageTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -19,6 +20,7 @@ use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 class Clinic extends Model implements HasMedia
 {
     use InteractsWithMedia;
+    use SoftDeletes;
     use UploadImageTrait;
 
     protected $fillable = ['user_id', 'name'];

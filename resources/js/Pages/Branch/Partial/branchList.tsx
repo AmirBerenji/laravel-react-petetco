@@ -2,8 +2,19 @@ import React from 'react'
 import {Branch} from "@/types/branch";
 import PrimaryButton from "@/Components/PrimaryButton";
 import {Link} from "@inertiajs/react";
+import {Clinic} from "@/types/clinic";
+import {Inertia} from "@inertiajs/inertia";
 
-export default function BranchList({branches}:{branches:Branch[]}) {
+export default function BranchList({branches,clinic}:{branches:Branch[],clinic:Clinic}) {
+
+  function deleteBranch(id:number) {
+    if (confirm("Are you sure you want to delete this branch?")) {
+      Inertia.delete(route("branch.destroy", id));
+    }
+  }
+  function editBranch(id:number) {
+      Inertia.delete(route("branch.edit", id));
+  }
 
   return (
     <div className="mb-4 overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
@@ -13,13 +24,11 @@ export default function BranchList({branches}:{branches:Branch[]}) {
             <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
               Edit your branch or Add new branch
             </h2>
-            <Link href={route("branch.create")}
+            <Link href={route("branch.create",[clinic])}
                   className=" mb-3 inline-flex items-center rounded-md border border-transparent bg-[#7395AE] px-4
                   py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out
                   hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
-                  active:bg-gray-900 dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300" >Add New Branch</Link>
-
-
+                  active:bg-gray-900 " >Add New Branch</Link>
           </header>
 
 
@@ -61,10 +70,18 @@ export default function BranchList({branches}:{branches:Branch[]}) {
                     {branch.address}
                   </td>
                   <td className="items-end">
-                    <PrimaryButton
-                      className="w-20 bg-orange-600 justify-center mr-5 hover:bg-orange-900 ">Edit</PrimaryButton>
-                    <PrimaryButton
-                      className="w-20 bg-red-600 justify-center mr-5 hover:bg-red-900 ">Delete</PrimaryButton>
+                    <Link href={'#'}
+                          onClick={()=>editBranch(typeof branch.id === "number" ? branch.id :0)}
+                          className="  inline-flex items-center rounded-md border border-transparent bg-orange-500 px-4
+                  py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out
+                  hover:bg-orange-700 focus:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-700 focus:ring-offset-2
+                  active:bg-orange-600 " >Edit Branch</Link>
+                    <Link href={'#'}
+                          onClick={()=>deleteBranch(typeof branch.id === "number" ? branch.id :0)}
+                          className=" ml-5 inline-flex items-center rounded-md border border-transparent bg-red-700 px-4
+                  py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out
+                  hover:bg-red-900 focus:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-offset-2
+                  active:bg-red-600 " >Delete Branch</Link>
                   </td>
                 </tr>
               ))}

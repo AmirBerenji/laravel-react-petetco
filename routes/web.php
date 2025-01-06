@@ -1,13 +1,13 @@
 <?php
 
 use App\Enum\RolesEnum;
-use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UpvoteController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Web\BranchController;
+use App\Http\Controllers\Web\ClinicController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -38,7 +38,9 @@ Route::middleware('auth')->group(function () {
 
             Route::resource('clinic', ClinicController::class);
 
-            Route::resource('branch', BranchController::class);
+            Route::get('/branch/{clinic}/create', [BranchController::class, 'create'])->name('branch.create');
+            Route::post('/branch/store', [BranchController::class, 'store'])->name('branch.store');
+            Route::delete('/branch/{branch}/destroy', [BranchController::class, 'destroy'])->name('branch.destroy');
 
             Route::resource('feature', FeatureController::class);
 
