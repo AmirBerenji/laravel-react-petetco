@@ -9,9 +9,11 @@ use App\Http\Requests\Clinic\ClinicStoreRequest;
 use App\Http\Requests\Clinic\ClinicUpdateRequest;
 use App\Models\Clinic;
 use App\Services\ClinicService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ClinicController extends Controller implements HasMiddleware
 {
@@ -44,34 +46,32 @@ class ClinicController extends Controller implements HasMiddleware
         return Inertia::render('Clinic/Create');
     }
 
-    public function store(ClinicStoreRequest $request)
+    public function store(ClinicStoreRequest $request): RedirectResponse
     {
+        $dto = ClinicBranchAddDto::from([
+            'user' => $request->user(),
+            'files' => $request->allFiles(),
+            ...$request->validated()
+        ]);
 
-        $dto = ClinicBranchAddDto::from(array_merge($request->validated(), ['user' => $request->user(), 'files' => $request->allFiles()]));
-        $clinicDto = $this->clinicService->addClinic($dto);
+        $this->clinicService->addClinic($dto);
 
-        return Inertia::render('Clinic/Index', [
-            'clinics' => $clinicDto,
-        ])->with('success', 'Clinic added successfully.');
+        return to_route('clinic.index')->with('success', __('created_clinic'));
     }
 
     public function update(ClinicUpdateRequest $request)
     {
         $dto = ClinicEditDto::from(array_merge($request->validated(), ['user' => $request->user(), 'files' => $request->allFiles()]));
 
-        $clinicDto = $this->clinicService->editClinic($dto);
+        $this->clinicService->editClinic($dto);
 
-        return Inertia::render('Clinic/Index', [
-            'clinics' => $clinicDto,
-        ])->with('success', 'Clinic edited successfully.');
+        return to_route('clinic.index')->with('success', __('updated_clinic'));
     }
 
     public function destroy(Clinic $clinic)
     {
-        $clinicDto = $this->clinicService->deleteClinic($clinic);
+        $clinic->delete();
 
-        return Inertia::render('Clinic/Index', [
-            'clinics' => $clinicDto,
-        ])->with('success', 'Clinic edited successfully.');
+        return to_route('clinic.index')->with('success', __('deleted_clinic'));
     }
 }
