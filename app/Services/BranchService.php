@@ -18,8 +18,8 @@ class BranchService
         ]);
     }
 
-    public function deleteBranch(Branch $branche): void
+    public function deleteBranch(Branch $branch): void
     {
-        $branche->delete();
+        $branch->delete();
     }
 }
