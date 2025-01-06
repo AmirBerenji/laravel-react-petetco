@@ -9,26 +9,18 @@ import {Clinic} from "@/types/clinic";
 
 export default function Create({clinic}: { clinic: Clinic }) {
 
-  console.log("Create Branch", clinic);
-
   const {data, setData, processing, post} = useForm<Branch>({
-    id: 0,
     name: '',
     email: '',
     address: '',
     phone: '',
-    clinic: clinic
   });
 
   const createBranch: FormEventHandler = (ev) => {
     ev.preventDefault();
-    post(route('clinic.branch.store'), {
+    post(route('clinic.branch.store', {clinic: clinic}), {
       preserveScroll: true,
       preserveState: true,
-      onSuccess: () => {
-        alert()
-
-      }
     });
   };
 

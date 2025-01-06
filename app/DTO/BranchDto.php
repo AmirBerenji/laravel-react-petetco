@@ -3,6 +3,7 @@
 namespace App\DTO;
 
 use App\Models\Clinic;
+use Spatie\LaravelData\Attributes\FromRouteParameter;
 use Spatie\LaravelData\Data;
 
 class BranchDto extends Data
@@ -18,13 +19,13 @@ class BranchDto extends Data
 
         public string $email,
 
+        #[FromRouteParameter('clinic')]
         public Clinic $clinic,
     ) {}
 
     public static function rules(): array
     {
         return [
-            'id' => 'int|nullable',
             'name' => 'required|string|max:255',
             'email' => 'nullable|email',
             'phone' => 'required|string|max:15',

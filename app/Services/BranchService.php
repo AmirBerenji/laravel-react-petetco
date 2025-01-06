@@ -7,9 +7,9 @@ use App\Models\Branch;
 
 class BranchService
 {
-    public function addBranch(BranchDto $entity): void
+    public function addBranch(BranchDto $entity): Branch
     {
-        $entity->clinic->branches()->create([
+        return $entity->clinic->branches()->create([
             'name' => $entity->name,
             'address' => $entity->address,
             'phone' => $entity->phone,

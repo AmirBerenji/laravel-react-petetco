@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Web;
 
 use App\DTO\BranchDto;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Branch\BranchStoreRequest;
 use App\Models\Branch;
 use App\Models\Clinic;
 use App\Services\BranchService;
@@ -22,30 +21,20 @@ class BranchController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __construct(protected BranchService $branchService, protected ClinicService $clinicService) {}
+    public function __construct(protected BranchService $branchService, protected ClinicService $clinicService)
+    {
+    }
 
     public function create(Clinic $clinic)
     {
         return Inertia::render('Branch/Create', ['clinic' => $clinic]);
     }
 
-    public function store(BranchStoreRequest $request)
+    public function store(BranchDto $branchDto, Clinic $clinic)
     {
-        $validate = $request->validated();
-        $branchDto = new BranchDto(
-            id: null,
-            name: $validate['name'],
-            phone: $validate['phone'],
-            address: $validate['address'],
-            email: $validate['email'],
-            clinic: $this->clinicService->getClinicById($validate['clinic']['id'])
-        );
         $this->branchService->addBranch($branchDto);
-        $clinicDto = $this->clinicService->getByUser($request->user());
 
-        return Inertia::render('Clinic/Index', [
-            'clinics' => $clinicDto,
-        ])->with('success', 'Branch added successfully.');
+        return to_route('clinic.index')->with('success', __('created_branch'));
     }
 
     public function show(string $id)
