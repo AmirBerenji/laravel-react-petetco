@@ -30,16 +30,16 @@ class ClinicController extends Controller implements HasMiddleware
     {
         $clinicDto = $this->clinicService->getByUser($request->user());
 
-        if ($clinicDto->count() > 0) {
-            return Inertia::render('Clinic/Index', [
-                'clinics' => $clinicDto,
-            ]);
+        if ($clinicDto->count() === 0) {
+            return to_route('clinic.create');
         }
 
-        return Inertia::render('Clinic/Create');
+        return Inertia::render('Clinic/Index', [
+            'clinics' => $clinicDto,
+        ]);
     }
 
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Clinic/Create');
     }
