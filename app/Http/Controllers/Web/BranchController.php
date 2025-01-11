@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Web;
 
 use App\DTO\BranchDto;
+use App\DTO\BranchUpdateDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Branch\BranchStoreRequest;
+use App\Http\Requests\Branch\BranchUpdateRequest;
 use App\Models\Branch;
 use App\Models\Clinic;
 use App\Services\BranchService;
 use App\Services\ClinicService;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Inertia\Inertia;
 
@@ -28,29 +30,45 @@ class BranchController extends Controller implements HasMiddleware
         return Inertia::render('Branch/Create', ['clinic' => $clinic]);
     }
 
-    public function store(BranchDto $branchDto, Clinic $clinic)
+    public function store(BranchStoreRequest $request, Clinic $clinic)
     {
+
+        $branchDto = BranchDto::from([
+            'clinic' => $clinic,
+            ...$request->validated(),
+        ]);
+
         $this->branchService->addBranch($branchDto);
 
         return to_route('clinic.index')->with('success', __('created_branch'));
     }
 
-    public function show(string $id)
+    public function show(Clinic $clinic, Branch $branch)
     {
         //
     }
 
-    public function edit(string $id)
+    public function edit(Clinic $clinic, Branch $branch)
     {
-        //
+        return Inertia::render('Branch/Edit', [
+            'clinic' => $clinic,
+            'branch' => $branch]);
     }
 
-    public function update(Request $request, string $id)
+    public function update(BranchUpdateRequest $request, clinic $clinic, Branch $branch)
     {
-        //
+
+        $branchDto = BranchUpdateDto::from([
+            'clinic' => $clinic,
+            ...$request->validated(),
+        ]);
+
+        $this->branchService->updateBranch($branchDto, $branch);
+
+        return to_route('clinic.index')->with('success', __('updated_branch'));
     }
 
-    public function destroy(Branch $branch)
+    public function destroy(Clinic $clinic, Branch $branch)
     {
         $this->branchService->deleteBranch($branch);
 

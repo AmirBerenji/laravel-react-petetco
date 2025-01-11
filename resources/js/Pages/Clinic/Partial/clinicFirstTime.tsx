@@ -4,11 +4,12 @@ import TextInput from "@/Components/TextInput";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useForm } from "@inertiajs/react";
 import {FirstClinicType} from "@/types/firstClinicType";
+import InputError from "@/Components/InputError";
 
 // Define the form data type explicitly
 
 export default function ClinicFirstTime() {
-  const { data, setData, processing, post } = useForm<FirstClinicType>({
+  const { data, setData, processing, errors,post } = useForm<FirstClinicType>({
     name: '',
     email: '',
     address: '',
@@ -50,6 +51,7 @@ export default function ClinicFirstTime() {
             <form onSubmit={createClinic} className="w-full mt-8" encType="multipart/form-data">
               <div className="mb-2">
                 <InputLabel htmlFor="name" value="Name" />
+                <InputError message={errors.name} className="mt-2" />
                 <TextInput
                   id="name"
                   className="mt-1 block w-full"
@@ -63,6 +65,7 @@ export default function ClinicFirstTime() {
 
               <div className="mb-2">
                 <InputLabel value="Email" />
+                <InputError message={errors.email} className="mt-2" />
                 <TextInput
                   id="email"
                   className="mt-1 block w-full"
@@ -76,6 +79,7 @@ export default function ClinicFirstTime() {
 
               <div className="mb-2">
                 <InputLabel value="Phone" />
+                <InputError message={errors.phone} className="mt-2" />
                 <TextInput
                   id="phone"
                   className="mt-1 block w-full"
@@ -89,6 +93,7 @@ export default function ClinicFirstTime() {
 
               <div className="mb-2">
                 <InputLabel value="Address" />
+                <InputError message={errors.address} className="mt-2" />
                 <TextInput
                   id="address"
                   className="mt-1 block w-full"
@@ -102,7 +107,8 @@ export default function ClinicFirstTime() {
 
               <div className="mb-2">
                 <InputLabel value="Logo" />
-                <div className="flex justify-center">
+                <InputError message={errors.logo} className="mt-2" />
+                <div className="flex justify-left ml-5 mt-2">
                   <input
                     className="hidden"
                     type="file"
@@ -123,7 +129,8 @@ export default function ClinicFirstTime() {
 
               <div className="mb-2">
                 <InputLabel value="Banner" />
-                <div className="flex justify-center">
+                <InputError message={errors.banner} className="mt-2" />
+                <div className="flex justify-left ml-5 mt-2">
                   <input
                     className="hidden"
                     type="file"

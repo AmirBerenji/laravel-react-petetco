@@ -1,19 +1,21 @@
 import React from 'react'
 import {Branch} from "@/types/branch";
-import PrimaryButton from "@/Components/PrimaryButton";
 import {Link} from "@inertiajs/react";
 import {Clinic} from "@/types/clinic";
 import {Inertia} from "@inertiajs/inertia";
 
 export default function BranchList({branches,clinic}:{branches:Branch[],clinic:Clinic}) {
 
-  function deleteBranch(id:number) {
+
+  function deleteBranch(clinicId: number, branchId: number) {
     if (confirm("Are you sure you want to delete this branch?")) {
-      Inertia.delete(route("clinic.branch.destroy", id));
+      Inertia.delete(route("clinic.branch.destroy", { clinic: clinicId, branch: branchId }));
     }
   }
-  function editBranch(id:number) {
-      Inertia.put(route("branch.edit", id));
+
+  function editBranch(clinicId: number, branchId: number) {
+
+    Inertia.get(route("clinic.branch.edit",  { clinic: clinicId, branch: branchId }));
   }
 
   return (
@@ -70,14 +72,15 @@ export default function BranchList({branches,clinic}:{branches:Branch[],clinic:C
                     {branch.address}
                   </td>
                   <td className="items-end">
-                    <Link href={'#'}
-                          onClick={()=>editBranch(typeof branch.id === "number" ? branch.id :0)}
+                    <Link
+                      href={route("clinic.branch.edit",  [clinic, branch ])}
+
                           className="  inline-flex items-center rounded-md border border-transparent bg-orange-500 px-4
                   py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out
                   hover:bg-orange-700 focus:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-700 focus:ring-offset-2
                   active:bg-orange-600 " >Edit Branch</Link>
                     <Link href={'#'}
-                          onClick={()=>deleteBranch(typeof branch.id === "number" ? branch.id :0)}
+                          onClick={()=>deleteBranch(clinic.id,branch.id)}
                           className=" ml-5 inline-flex items-center rounded-md border border-transparent bg-red-700 px-4
                   py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out
                   hover:bg-red-900 focus:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-offset-2

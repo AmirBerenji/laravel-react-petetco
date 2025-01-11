@@ -37,7 +37,6 @@ class ClinicService implements IClinicRepository
             $newClinic->handleImages($clinic->files);
 
             $branchDto = new BranchDto(
-                id: null,
                 name: $clinic->name,
                 phone: $clinic->phone,
                 address: $clinic->address,

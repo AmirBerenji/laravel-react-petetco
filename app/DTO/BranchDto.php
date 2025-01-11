@@ -9,7 +9,7 @@ use Spatie\LaravelData\Data;
 class BranchDto extends Data
 {
     public function __construct(
-        public ?int $id,
+        // public ?int $id,
 
         public string $name,
 
@@ -19,7 +19,7 @@ class BranchDto extends Data
 
         public string $email,
 
-        #[FromRouteParameter('clinic')]
+        // #[FromRouteParameter('clinic')]
         public Clinic $clinic,
     ) {}
 
